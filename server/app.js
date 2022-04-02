@@ -24,7 +24,7 @@ mongoose.connect(dbURI, (err) => {
   }
 });
 
-const redisURL = process.env.REDISCLOUD_URL || 'redis://default:ki6TnQEVPUTJoDXaRk95vk4zI74YZRYN@redis-11168.c11.us-east-1-2.ec2.cloud.redislabs.com:11168'; // Finally squashed commits to remove url!
+const redisURL = process.env.REDISCLOUD_URL;
 
 const redisClient = redis.createClient({
   legacyMode: true,
@@ -34,7 +34,10 @@ redisClient.connect().catch(console.error);
 
 const app = express();
 
-app.use(helmet());
+app.use(helmet({
+  crossOriginEmbedderPolicy: false,
+  contentSecurityPolicy: false,
+}));
 app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
 app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
 app.use(compression());
