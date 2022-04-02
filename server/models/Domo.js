@@ -18,7 +18,7 @@ const DomoSchema = new mongoose.Schema({
     min: 0,
     require: true,
   },
-  favThing:{
+  favThing: {
     type: String,
     required: true,
     trim: true,
