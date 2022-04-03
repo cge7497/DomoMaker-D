@@ -40,8 +40,21 @@ const getDomos = (req, res) => DomoModel.findByOwner(req.session.account._id, (e
   return res.json({ domos: docs });
 });
 
+const getDomoLeaderboard = (req, res) => DomoModel.find({}, (err, docs) => {
+  if (err) {
+    console.log(err);
+    return res.status(400).json({ error: 'An error occurred!' });
+  }
+
+  return res.json({ domos: docs });
+}).sort({age: 'desc'});
+
+const DomoLeaderboardPage = (req, res) => res.render('leaderboard');
+
 module.exports = {
   makerPage,
   makeDomo,
   getDomos,
+  getDomoLeaderboard,
+  DomoLeaderboardPage,
 };
