@@ -90,7 +90,11 @@ const init = async () => {
     const response = await fetch('/getToken');
     const data = await response.json();
 
-    if (window.location.pathname === '/maker') {
+    const makerButton = document.getElementById('makerButton');
+    const leaderboardButton = document.getElementById('leaderboardButton');
+
+    makerButton.addEventListener('click', (e) => {
+        e.preventDefault();
         ReactDOM.render(
             <DomoForm csrf={data.csrfToken} />,
             document.getElementById('makeDomo')
@@ -100,14 +104,27 @@ const init = async () => {
             document.getElementById('domos')
         );
         loadDomosFromServer();
-    }
-    else if (window.location.pathname === '/leaderboard') {
+    });
+
+    leaderboardButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        ReactDOM.unmountComponentAtNode(document.getElementById('makeDomo'));
         ReactDOM.render(
             <DomoList domos={[]} />,
             document.getElementById('domos')
         );
         loadDomoLeaderboard();
-    }
+    });
+
+    ReactDOM.render(
+        <DomoForm csrf={data.csrfToken} />,
+        document.getElementById('makeDomo')
+    );
+    ReactDOM.render(
+        <DomoList domos={[]} />,
+        document.getElementById('domos')
+    );
+    loadDomosFromServer();
 };
 
 window.onload = init;

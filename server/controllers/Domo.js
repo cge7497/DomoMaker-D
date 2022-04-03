@@ -18,8 +18,11 @@ const makeDomo = async (req, res) => {
   try {
     const newDomo = new Domo(domoData);
     await newDomo.save();
-    return res.status(201).json({ name: newDomo.name, age: newDomo.age, 
-      favThing: newDomo.favThing });
+    return res.status(201).json({
+      name: newDomo.name,
+      age: newDomo.age,
+      favThing: newDomo.favThing,
+    });
   } catch (err) {
     console.log(err);
     if (err.code === 11000) {
@@ -47,14 +50,11 @@ const getDomoLeaderboard = (req, res) => DomoModel.find({}, (err, docs) => {
   }
 
   return res.json({ domos: docs });
-}).sort({age: 'desc'});
-
-const DomoLeaderboardPage = (req, res) => res.render('leaderboard');
+}).sort({ age: 'desc' });
 
 module.exports = {
   makerPage,
   makeDomo,
   getDomos,
   getDomoLeaderboard,
-  DomoLeaderboardPage,
 };
